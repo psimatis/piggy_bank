@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'database_helper.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,22 +28,54 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
   double balance = 0.0;
   List<double> balanceHistory = []; // New list to store balance history
   TextEditingController amountController = TextEditingController();
+  DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-  void addToBalance() {
+  bool emptyAmountCheck(){
+    if (amountController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter a valid amount.'),
+        ),
+      );
+      return true;
+    }
+    return false;
+  }
+
+  void addToBalance() async {
+    if (emptyAmountCheck()) {
+      return;
+    }
     setState(() {
       double enteredAmount = double.tryParse(amountController.text) ?? 0.0;
       balance += enteredAmount;
       amountController.clear();
       balanceHistory.add(balance); // Add balance to history
     });
+    await dbHelper.insertBalance(balance);
   }
 
-  void removeFromBalance() {
+  void removeFromBalance() async {
+    if (emptyAmountCheck()) {
+      return;
+    }
     setState(() {
       double enteredAmount = double.tryParse(amountController.text) ?? 0.0;
       balance -= enteredAmount;
       amountController.clear();
       balanceHistory.add(balance); // Add balance to history
+    });
+    await dbHelper.insertBalance(balance);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dbHelper.getBalanceHistory().then((history) {
+      setState(() {
+        balanceHistory = history;
+        balance = balanceHistory.last;
+      });
     });
   }
 
@@ -115,7 +148,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
                 gridData: FlGridData(show: false),
                 titlesData: FlTitlesData(show: false),
                 borderData: FlBorderData(
-                  show: true,
+                  show: false,
                   border: Border.all(color: Colors.teal),
                 ),
                 lineBarsData: [
@@ -124,8 +157,8 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
                       balanceHistory.length,
                           (index) => FlSpot(index.toDouble(), balanceHistory[index]),
                     ),
-                    isCurved: true,
-                    // colors: [Colors.teal],
+                    isCurved: false,
+                    color: Colors.teal,
                     barWidth: 4,
                     belowBarData: BarAreaData(show: false),
                     aboveBarData: BarAreaData(show: false),
