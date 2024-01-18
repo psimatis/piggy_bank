@@ -37,7 +37,6 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
           content: Text('Please enter a valid amount.'),
         ),
       );
-      amountController.clear();
       return true;
     }
     return false;
@@ -45,6 +44,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
 
   void updateBalance(String operator) async {
     if (emptyAmountCheck()) {
+      amountController.clear();
       return;
     }
     setState(() {
@@ -84,7 +84,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
           const SizedBox(height: 10),
           Text(
             'Balance: \$${balance.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 24, color: Colors.black87),
+            style: const TextStyle(fontSize: 24),
           ),
           const SizedBox(height: 10),
           Padding(
@@ -114,9 +114,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
             child: LineChart(
               LineChartData(
                 gridData: const FlGridData(show: true),
-                titlesData: const FlTitlesData(
-                  show: false,
-                ),
+                titlesData: const FlTitlesData(show: false),
                 borderData: FlBorderData(
                   show: false,
                   border: Border.all(color: Colors.teal),
@@ -148,7 +146,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
     return ElevatedButton(
       onPressed: () => updateBalance(operator),
       style: ElevatedButton.styleFrom(
-        primary: Colors.white,
+        backgroundColor: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
       ),
       child: Text(

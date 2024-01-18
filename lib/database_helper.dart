@@ -31,7 +31,6 @@ class DatabaseHelper {
     await db.insert(
       'balance_history',
       {'amount': amount},
-      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
