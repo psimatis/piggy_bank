@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'database_helper.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(PiggyBank());
 
-class MyApp extends StatelessWidget {
+class PiggyBank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Piggy Bank App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.teal,
       ),
@@ -33,7 +32,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
   bool emptyAmountCheck(){
     if (amountController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please enter a valid amount.'),
         ),
       );
@@ -83,34 +82,34 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Piggy Bank'),
+        title: const Text('Piggy Bank'),
         backgroundColor: Colors.teal,
       ),
       body: Column(
         children: [
-          SizedBox(height: 20),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             '🐷 Piggy Bank 🐷',
             style: TextStyle(fontSize: 24),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 10),
           Text(
             'Balance: \$${balance.toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 24, color: Colors.black87),
+            style: const TextStyle(fontSize: 24, color: Colors.black87),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48.0), // Adjusted padding
             child: TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Enter Amount',
                 border: OutlineInputBorder(),
               ),
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -118,35 +117,35 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
                 onPressed: addToBalance,
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                 ),
-                child: Text(
+                child: const Text(
                   '+',
                   style: TextStyle(fontSize: 18, color: Colors.teal),
                 ),
               ),
-              SizedBox(width: 20),
+              const SizedBox(width: 10),
               ElevatedButton(
                 onPressed: removeFromBalance,
                 style: ElevatedButton.styleFrom(
                   primary: Colors.white,
-                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                 ),
-                child: Text(
+                child: const Text(
                   '-',
                   style: TextStyle(fontSize: 18, color: Colors.red),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 10),
           Container(
-            height: 200,
-            padding: EdgeInsets.all(16),
+            height: 180,
+            padding: const EdgeInsets.all(30),
             child: LineChart(
               LineChartData(
-                gridData: FlGridData(show: false),
-                titlesData: FlTitlesData(show: false),
+                gridData: const FlGridData(show: false),
+                titlesData: const FlTitlesData(show: false),
                 borderData: FlBorderData(
                   show: false,
                   border: Border.all(color: Colors.teal),
@@ -162,10 +161,9 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
                     barWidth: 4,
                     belowBarData: BarAreaData(show: false),
                     aboveBarData: BarAreaData(show: false),
-                    dotData: FlDotData(show: false),
+                    dotData: const FlDotData(show: false),
                   ),
                 ],
-                // titlesInAxis: [],
               ),
             ),
           ),

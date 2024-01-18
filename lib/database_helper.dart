@@ -43,4 +43,3 @@ class DatabaseHelper {
     return List.generate(maps.length, (i) => maps[i]['amount'] as double);
   }
 }
-
