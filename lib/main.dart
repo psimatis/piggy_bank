@@ -113,8 +113,14 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
             padding: const EdgeInsets.all(30),
             child: LineChart(
               LineChartData(
-                gridData: const FlGridData(show: false),
-                titlesData: const FlTitlesData(show: false),
+                gridData: const FlGridData(show: true),
+                titlesData: FlTitlesData(
+                  show: true,
+                  // leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                ),
                 borderData: FlBorderData(
                   show: false,
                   border: Border.all(color: Colors.teal),

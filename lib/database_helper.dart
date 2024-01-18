@@ -13,8 +13,8 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    String path = join(await getDatabasesPath(), 'piggy_bank.db');
-    return await openDatabase(path, version: 1, onCreate: _createTable);
+    String path = join(await getDatabasesPath(), 'piggy_bank1.db');
+    return await openDatabase(path, version: 2, onCreate: _createTable);
   }
 
   Future<void> _createTable(Database db, int version) async {
