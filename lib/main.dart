@@ -25,44 +25,33 @@ class PiggyBankScreen extends StatefulWidget {
 
 class _PiggyBankScreenState extends State<PiggyBankScreen> {
   double balance = 0.0;
-  List<double> balanceHistory = []; // New list to store balance history
+  List<double> balanceHistory = [];
   TextEditingController amountController = TextEditingController();
   DatabaseHelper dbHelper = DatabaseHelper.instance;
 
-  bool emptyAmountCheck(){
-    if (amountController.text.trim().isEmpty) {
+  bool emptyAmountCheck() {
+    String text = amountController.text.trim();
+    if (text.isEmpty || double.tryParse(text) == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please enter a valid amount.'),
         ),
       );
+      amountController.clear();
       return true;
     }
     return false;
   }
 
-  void addToBalance() async {
+  void updateBalance(String operator) async {
     if (emptyAmountCheck()) {
       return;
     }
     setState(() {
-      double enteredAmount = double.tryParse(amountController.text) ?? 0.0;
-      balance += enteredAmount;
+      double amount = double.tryParse(amountController.text) ?? 0.0;
       amountController.clear();
-      balanceHistory.add(balance); // Add balance to history
-    });
-    await dbHelper.insertBalance(balance);
-  }
-
-  void removeFromBalance() async {
-    if (emptyAmountCheck()) {
-      return;
-    }
-    setState(() {
-      double enteredAmount = double.tryParse(amountController.text) ?? 0.0;
-      balance -= enteredAmount;
-      amountController.clear();
-      balanceHistory.add(balance); // Add balance to history
+      balance = (operator == '+') ? balance + amount : balance - amount;
+      balanceHistory.add(balance);
     });
     await dbHelper.insertBalance(balance);
   }
@@ -99,7 +88,7 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
           ),
           const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48.0), // Adjusted padding
+            padding: const EdgeInsets.symmetric(horizontal: 48.0),
             child: TextField(
               controller: amountController,
               keyboardType: TextInputType.number,
@@ -113,29 +102,9 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                onPressed: addToBalance,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                ),
-                child: const Text(
-                  '+',
-                  style: TextStyle(fontSize: 18, color: Colors.teal),
-                ),
-              ),
+              updateBalanceButton('+'),
               const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: removeFromBalance,
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
-                ),
-                child: const Text(
-                  '-',
-                  style: TextStyle(fontSize: 18, color: Colors.red),
-                ),
-              ),
+              updateBalanceButton('-'),
             ],
           ),
           const SizedBox(height: 10),
@@ -154,20 +123,35 @@ class _PiggyBankScreenState extends State<PiggyBankScreen> {
                   LineChartBarData(
                     spots: List.generate(
                       balanceHistory.length,
-                          (index) => FlSpot(index.toDouble(), balanceHistory[index]),
+                      (index) =>
+                          FlSpot(index.toDouble(), balanceHistory[index]),
                     ),
                     isCurved: false,
                     color: Colors.teal,
                     barWidth: 4,
                     belowBarData: BarAreaData(show: false),
                     aboveBarData: BarAreaData(show: false),
-                    dotData: const FlDotData(show: false),
+                    dotData: const FlDotData(show: true),
                   ),
                 ],
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  ElevatedButton updateBalanceButton(String operator) {
+    return ElevatedButton(
+      onPressed: () => updateBalance(operator),
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+      ),
+      child: Text(
+        operator,
+        style: const TextStyle(fontSize: 18, color: Colors.teal),
       ),
     );
   }
