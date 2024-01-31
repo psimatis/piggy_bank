@@ -9,4 +9,6 @@ Features:
 * Line plot shows the change of balance over time.
 * No asset requirements.
 
-![Screen Shot](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
+<img src="https://github.com/psimatis/piggy_bank/blob/master/piggy_bank.jpg" height="500">
+
+
