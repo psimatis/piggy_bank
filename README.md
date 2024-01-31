@@ -1,16 +1,12 @@
-# piggy_bank
+# Piggy Bank
 
-A new Flutter project.
+I wanted to track my expenses, but the available apps have too many bells and whistles for my liking. 
+Thus, I created my own super simple piggy bank app with Flutter.
 
-## Getting Started
+Features:
+* Supports tracking of income/expenses.
+* SQL database stores the transaction amounts.
+* Line plot shows the change of balance over time.
+* No asset requirements.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Screen Shot](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
